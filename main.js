@@ -1,6 +1,6 @@
 import Expo, { Components, Constants, Location, Permissions, WebBrowser } from 'expo';
 import React, { Component } from 'react';
-import { Platform, ScrollView, ListView, TextInput, TouchableHighlight, TouchableOpacity, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { Platform, ListView, TextInput, TouchableHighlight, TouchableOpacity, StyleSheet, Text, View, Dimensions } from 'react-native';
 import KeyboardEventListener from './util/KeyboardEventListener';
 
 const io = require('socket.io-client');
@@ -65,8 +65,6 @@ class App extends React.Component {
       inMapView: false,
       latitude: 35.4478014,
       longitude: -120.1680304,
-      listHeight: 0,
-      scrollViewHeight: 0,
       nickname: 'potato',
       buttonStyle: {
          height: 45,
@@ -135,6 +133,7 @@ class App extends React.Component {
     });
 
     socket.on('location', location => {
+      socket.emit('chat message', ' > ' + this.state.nickname + ' just shared their location!');
       this.setState({
         lastLocation: location,
       });
@@ -167,8 +166,6 @@ class App extends React.Component {
   onAddPressed() {
     this.refs['chatInput'].clear();
 
-    this.scrollToBottom();
-
     const socket = io(url, {
       transports: ['websocket'],
     });
@@ -185,12 +182,6 @@ class App extends React.Component {
       lastLocation: null,
       inMapView: false,
     });
-  }
-
-  scrollToBottom(){
-    const bottomOfList =  this.state.listHeight - this.state.scrollViewHeight
-    console.log('scrollToBottom ' + bottomOfList);
-    this.scrollView.scrollTo({ y: bottomOfList })
   }
 
   _getLocationAsync = async () => {
@@ -219,21 +210,10 @@ class App extends React.Component {
     if (this.state.lastLocation == null) {
       return (
         <View style={this.state.containerStyle}>
-        <ScrollView
-          onContentSizeChange={ (contentWidth, contentHeight) => {
-            this.setState({listHeight: contentHeight });
-            console.log(contentHeight);
-          }}
-          onLayout={ (e) => {
-            const height = e.nativeEvent.layout.height
-            this.setState({scrollViewHeight: height })
-          }}
-          ref={ (ref) => this.scrollView = ref }>
           <ListView
             dataSource = {this.state.dataSource}
             renderRow = {(rowData) => <Text style={styles.chatText}>{rowData}</Text>}
           />
-        </ScrollView>
           <TextInput
             ref={'chatInput'}
             style={styles.input}
@@ -268,7 +248,6 @@ class App extends React.Component {
             ref={'chatInput'}
             style={styles.input}
             onChangeText={this.onChange.bind(this)}
-            onPress={this.scrollToBottom()}
           />
             <TouchableHighlight
               onPress={this.onAddPressed.bind(this)}

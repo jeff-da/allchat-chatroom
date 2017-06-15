@@ -17,8 +17,8 @@ io.on('connection', function(socket){
     console.log('message: ' + msg);
     io.emit('chat message', msg);
     if (msg.coords != null) {
-       msgList.push('> Someone just shared their location! Latitude: '
-       + msg.coords.latitude + ', Longitude: ' + msg.coords.longitude);
+       //msgList.push('> Someone just shared their location! Latitude: '
+       //+ msg.coords.latitude + ', Longitude: ' + msg.coords.longitude);
        io.emit('location', msg);
     } else {
        msgList.push(msg);
@@ -40,7 +40,7 @@ io.on('connection', function(socket){
           index = 0;
         }
       }
-      io.emit('name', '' + adjectives[index] + ' ' + nicknames.get(adjectives[index]).pop());
+      io.emit('name', adjectives[index] + ' ' + nicknames.get(adjectives[index]).pop());
     } else {
       io.emit('name', 'Another Wandering Traveler');
     }
