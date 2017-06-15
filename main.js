@@ -170,8 +170,10 @@ class App extends React.Component {
     const socket = io(url, {
       transports: ['websocket'],
     });
-
     socket.emit('chat message', '' + this.state.nickname + ': ' + this.state.message);
+    this.setState({
+      message: '',
+    });
   }
 
   onSharePressed() {

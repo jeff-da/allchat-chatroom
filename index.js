@@ -59,9 +59,8 @@ http.listen(3000, function(){
                               , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin']);
     var count = Math.floor(Math.random() * 20);
     for (var i = 0; i < count; i++) {
-      nicknames.get(adjective).shift();
+      nicknames.get(adjective).push(nicknames.get(adjective).shift());
     }
-    nicknames.get(adjective).pop();
   }
   // create map
 });
