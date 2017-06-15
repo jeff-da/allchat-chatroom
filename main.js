@@ -1,7 +1,8 @@
 import Expo, { Components, Constants, Location, Permissions, WebBrowser } from 'expo';
 import React, { Component } from 'react';
-import { Platform, ListView, TextInput, TouchableHighlight, TouchableOpacity, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { Platform, ListView, FlatList, TextInput, TouchableHighlight, TouchableOpacity, StyleSheet, Text, View, Dimensions } from 'react-native';
 import KeyboardEventListener from './util/KeyboardEventListener';
+import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 const io = require('socket.io-client');
 const url = 'https://e993f380.ngrok.io';
@@ -55,9 +56,7 @@ class App extends React.Component {
     socket.emit('A new user just joined the chatroom!');
     this.state = {
       isConnected: false,
-      data: null,
       message: ' ',
-      lastMessage: 'no previous messages',
       messageList: initialMessages,
       dataSource: ds.cloneWithRows(initialMessages),
       location: null,
@@ -65,7 +64,7 @@ class App extends React.Component {
       inMapView: false,
       latitude: 35.4478014,
       longitude: -120.1680304,
-      nickname: 'potato',
+      nickname: 'Default Nickname',
       buttonStyle: {
          height: 45,
          alignSelf: 'stretch',
@@ -124,23 +123,8 @@ class App extends React.Component {
       });
     });
 
-    socket.on('ping', data => {
-      this.setState(data);
-    });
-
-    socket.on('chat message', msg => {
-      this.setState({ lastMessage: msg });
-    });
-
     socket.on('location', location => {
-      socket.emit('chat message', ' > ' + this.state.nickname + ' just shared their location!');
-      this.setState({
-        lastLocation: location,
-      });
-      this.setState({
-        longitude: this.state.lastLocation.coords.longitude,
-        latitude: this.state.lastLocation.coords.latitude,
-      });
+      socket.emit('location message', ' > ' + this.state.nickname + ' just shared their location!', location);
     });
 
     socket.on('message list', list => {
@@ -180,6 +164,10 @@ class App extends React.Component {
     this._getLocationAsync();
   }
 
+  onLocationPressed() {
+
+  }
+
   onMapPressed() {
     this.setState({
       lastLocation: null,
@@ -209,13 +197,27 @@ class App extends React.Component {
     this.setState({ inMapView: true });
   };
 
+  _renderRowView(rowData) {
+      return (
+        <TouchableHighlight
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>
+            {rowData}
+          </Text>
+        </TouchableHighlight>
+        //<Text style={styles.chatText}>{rowData}</Text>
+      );
+  }
+
   render() {
     if (this.state.lastLocation == null) {
       return (
         <View style={this.state.containerStyle}>
           <ListView
+            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
             dataSource = {this.state.dataSource}
-            renderRow = {(rowData) => <Text style={styles.chatText}>{rowData}</Text>}
+            renderRow = {this._renderRowView}
           />
           <TextInput
             ref={'chatInput'}
@@ -244,8 +246,9 @@ class App extends React.Component {
       return (
         <View style={this.state.containerStyle}>
           <ListView
+            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
             dataSource = {this.state.dataSource}
-            renderRow = {(rowData) => <Text style={styles.chatText}>{rowData}</Text>}
+            renderRow = {this._renderRowView}
           />
           <TextInput
             ref={'chatInput'}

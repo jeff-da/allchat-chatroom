@@ -11,6 +11,8 @@
     "node": "^0.0.0",
     "react": "16.0.0-alpha.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-17.0.0.tar.gz",
+    "react-native-invertible-scroll-view": "^1.0.0",
+    "react-native-reversed-flat-list": "^1.0.1",
     "socket.io": "^2.0.3"
   }
 }
