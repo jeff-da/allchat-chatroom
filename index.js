@@ -1,7 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var msgList = [ { 'Hello! Welcome to the chatroom.', 'Messages will appear below :)'];
+var msgList = [ 'Hello! Welcome to the chatroom.', 'Messages will appear below :)'];
 var nickname = 'Clueless Monkey';
 let adjectives = ['Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
                   , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'];
