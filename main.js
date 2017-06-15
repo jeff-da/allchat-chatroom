@@ -4,7 +4,7 @@ import { Platform, ListView, TextInput, TouchableHighlight, TouchableOpacity, St
 import KeyboardEventListener from './util/KeyboardEventListener';
 
 const io = require('socket.io-client');
-const url = 'https://b06d7c9d.ngrok.io';
+const url = 'https://e993f380.ngrok.io';
 var {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
@@ -51,8 +51,8 @@ class App extends React.Component {
     const socket = io(url, {
       transports: ['websocket'],
     });
-    socket.emit('name', 'blastoise');
-    socket.emit('chat message', 'A new user has connected.');
+    socket.emit('name', ' ');
+    socket.emit('A new user just joined the chatroom!');
     this.state = {
       isConnected: false,
       data: null,
@@ -79,7 +79,7 @@ class App extends React.Component {
       containerStyle: {
          flex: 1,
          justifyContent: 'flex-end',
-         paddingTop: 20,
+         paddingTop: 24,
          marginLeft: 10,
          backgroundColor: '#F7F7F7',
          paddingBottom: 10,
@@ -93,7 +93,7 @@ class App extends React.Component {
         containerStyle: {
            flex: 1,
            justifyContent: 'flex-end',
-           paddingTop: 20,
+           paddingTop: 24,
            marginLeft: 10,
            backgroundColor: '#F7F7F7',
            paddingBottom: 10 + keyboardHeight,
@@ -154,6 +154,7 @@ class App extends React.Component {
       this.setState({
         nickname: name,
       });
+      socket.emit('chat message', this.state.nickname + ' has connected.');
     });
   }
 
