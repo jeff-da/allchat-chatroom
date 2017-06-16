@@ -3,17 +3,137 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var msgList = [
                 {
-                  text: 'Hello! Welcome to the chatroom.',
+                  name: '',
+                  text: 'Send a message!',
                   location: null,
                 },
                 {
-                  text: 'Send a message!',
+                  name: '',
+                  text: 'Hello! Welcome to the chatroom.',
                   location: null,
                 }
               ];
 var nickname = 'Clueless Monkey';
 let adjectives = ['Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
-                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'];
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'
+                  , 'Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
+                  , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'
+                  , 'Alive', 'Cleaver', 'Odd', 'Powerful', 'Brave', 'Calm', 'Delightful', 'Eager', 'Faithful'
+                  , 'Silly', 'Thankful', 'Victorious', 'Witty', 'Zealous', 'Proud', 'Clumsy', 'Embarrased'
+                  , 'Helpless', 'Mysterious', 'Scary', 'Gigantic', 'Huge', 'Little', 'Puny', 'Calm'];
 var nicknames = new Map();
 
 app.get('/', function(req, res){
@@ -21,25 +141,23 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    console.log('message: ' + msg);
-    if (msg.coords != null) {
-       io.emit('location', msg);
-    } else {
-       msgList.unshift({
-                        text: msg,
-                        location: null
-                      });
-    }
+  socket.on('chat message', function(nick, msg){
+    console.log(nick + msg);
+    msgList.unshift({
+                      name: nick,
+                      text: msg,
+                      location: null
+                    });
     if (msgList.length > 20) {
       msgList.splice(20, 1);
     }
     io.emit('message list', msgList);
   });
 
-  socket.on('location message', function(msg, location){
-    console.log('location message: ' + msg);
+  socket.on('location message', function(nick, msg, location){
+    console.log(nick + 'has shared location');
     msgList.unshift({
+                     name: nick,
                      text: msg,
                      location: location,
                    });
@@ -62,14 +180,124 @@ io.on('connection', function(socket){
     }
   });
 });
-
-http.listen(process.env.PORT || 3000, function(){
+//process.env.PORT ||
+http.listen(3000, function(){
   console.log('listening on *:3000');
 
   for (const adjective of adjectives) {
     nicknames.set(adjective, ['Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
-                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin']);
-    var count = Math.floor(Math.random() * 20);
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur'
+                              , 'Coyote', 'Lynx', 'Octopus', 'Penguin', 'Monkey', 'Dragon', 'Whale', 'Dog', 'Panther', 'Ocelot'
+                              , 'Crocodile', 'Duck', 'Bear', 'Gecko', 'Hippo', 'Wolf', 'Toucan', 'Sloth', 'Tiger', 'Dolphin'
+                              , 'Pigeon', 'Turkey', 'Duck', 'Chicken', 'Rat', 'Cat', 'Donkey', 'Rabbit', 'Sheep', 'Buffalo'
+                              , 'Deer', 'Eagle', 'Eel', 'Earthworm', 'Chipmunk', 'Cheetah', 'Cardinal', 'Charmeleon', 'Dinosaur']);
+    var count = Math.floor(Math.random() * 1027);
     for (var i = 0; i < count; i++) {
       nicknames.get(adjective).push(nicknames.get(adjective).shift());
     }

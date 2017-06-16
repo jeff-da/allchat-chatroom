@@ -1,11 +1,11 @@
-import Expo, { Location, Permissions } from 'expo';
+import Expo, { Components, Location, Permissions } from 'expo';
 import React, { Component } from 'react';
 import { ListView, TextInput, TouchableHighlight, TouchableOpacity, StyleSheet, Text, View, Dimensions, Linking } from 'react-native';
 import KeyboardEventListener from './util/KeyboardEventListener';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 const io = require('socket.io-client');
-const url = 'https://expo-chat-example.herokuapp.com/';
+const url = 'https://e897f62c.ngrok.io';
 const SleekLoadingIndicator = require('react-native-sleek-loading-indicator');
 var {height, width} = Dimensions.get('window');
 var component = this;
@@ -37,15 +37,17 @@ const styles = StyleSheet.create({
       marginTop: 10,
       marginLeft: 10,
       marginRight: 10,
+      marginBottom: 10,
       alignItems: 'center',
       justifyContent: 'center',
    },
    chatBox: {
-      height: 45,
+      height: 25,
       alignSelf: 'stretch',
       marginTop: 10,
       marginLeft: 10,
       marginRight: 10,
+      marginBottom: 10,
       justifyContent: 'center',
       backgroundColor: '#F6F6F6',
    },
@@ -57,6 +59,10 @@ const styles = StyleSheet.create({
    chatText: {
      fontSize: 14,
      fontWeight: '400',
+   },
+   nameText: {
+     fontSize: 14,
+     fontWeight: '500',
    },
    map: {
      width: width,
@@ -86,7 +92,7 @@ class App extends React.Component {
       inMapView: false,
       latitude: 35.4478014,
       longitude: -120.1680304,
-      nickname: 'Default Nickname',
+      nickname: null,
       loading: false,
       buttonStyle: {
          height: 45,
@@ -144,7 +150,7 @@ class App extends React.Component {
     });
 
     socket.on('location', location => {
-      socket.emit('location message', '' + this.state.nickname + ' just shared their location!', location);
+      socket.emit('location message', this.state.nickname, ' just shared their location!', location);
     });
 
     socket.on('message list', list => {
@@ -156,10 +162,12 @@ class App extends React.Component {
     });
 
     socket.on('name', name => {
-      this.setState({
-        nickname: name,
-      });
-      socket.emit('chat message', this.state.nickname + ' has connected.');
+      if (this.state.nickname == null) {
+        this.setState({
+          nickname: name,
+        });
+        socket.emit('chat message', this.state.nickname, ' has connected.');
+      }
     });
   }
 
@@ -175,11 +183,12 @@ class App extends React.Component {
     const socket = io(url, {
       transports: ['websocket'],
     });
-    socket.emit('chat message', '' + this.state.nickname + ': ' + this.state.message);
+    socket.emit('chat message', this.state.nickname, ': ' + this.state.message);
     this.setState({
       message: '',
       loading: true,
     });
+    this.listView.scrollTo({ y: 0 });
   }
 
   onSharePressed() {
@@ -196,14 +205,20 @@ class App extends React.Component {
     });
   }
 
-  onLocationPressed() {
-    console.log('cool beans');
-    //this.setState({
-    //  longitude: location.coords.longitude,
-    //  latitude: location.coords.latitude
-    //});
-    //this.handlePressButtonAsync();
-  }
+  nameStyle = function(nick) {
+   if (nick == this.state.nickname) {
+     return {
+       fontSize: 14,
+       fontWeight: '500',
+       color: '#5676D9',
+     }
+   } else {
+     return {
+      fontSize: 14,
+      fontWeight: '500',
+     }
+   }
+ }
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -220,7 +235,7 @@ class App extends React.Component {
       transports: ['websocket'],
     });
 
-    socket.emit('chat message', this.state.location);
+    socket.emit('location message', this.state.nickname, ' just shared their location!', location);
   };
 
   _handlePressButtonAsync = async () => {
@@ -231,9 +246,14 @@ class App extends React.Component {
     if (rowData.location == null) {
       return (
         <TouchableHighlight style={styles.chatBox} >
+        <Text>
+          <Text style={this.nameStyle(rowData.name)}>
+            {rowData.name}
+          </Text>
           <Text style={styles.chatText}>
             {rowData.text}
           </Text>
+        </Text>
         </TouchableHighlight>
       );
     } else {
@@ -245,31 +265,35 @@ class App extends React.Component {
             this.setState({
               longitude: rowData.location.coords.longitude,
               latitude: rowData.location.coords.latitude,
+              inMapView: true,
             });
-            Linking.canOpenURL('http://google.com').then(supported => {
+            /*Linking.canOpenURL('http://google.com').then(supported => {
             if (!supported) {
               console.log('Cant handle url: ' + url);
             } else {
               return Linking.openURL('https://www.google.com/maps/search/' + this.state.latitude + ',' + this.state.longitude);
             }
-          }).catch(err => console.error('An error occurred', err));
+          }).catch(err => console.error('An error occurred', err));*/
             //this._handlePressButtonAsync.bind(this);
           }}
         >
           <Text style={styles.buttonText}>
-            {rowData.text}
+            {rowData.name + rowData.text}
           </Text>
         </TouchableHighlight>
       );
     }
   }
 
-//<SleekLoadingIndicator loading={this.state.loading} />
   render() {
-    if (this.state.loading) {
+    if (this.state.loading && !this.state.inMapView) {
       return (
         <View style={this.state.containerStyle}>
           <ListView
+            ref={ref => this.listView = ref}
+            onContentSizeChange={() => {
+            this.listView.scrollTo({y: 0})
+            }}
             renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
             dataSource = {this.state.dataSource}
             renderRow = {this.renderRowView.bind(this)}
@@ -298,11 +322,15 @@ class App extends React.Component {
             <SleekLoadingIndicator loading={this.state.loading} text={'Sending...'}/>
         </View>
       );
-    } else {
+    } else if (!this.state.inMapView) {
     //if (this.state.inMapView != true) {
       return (
         <View style={this.state.containerStyle}>
           <ListView
+            ref={ref => this.listView = ref}
+            onContentSizeChange={() => {
+            this.listView.scrollTo({y: 0})
+            }}
             renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
             dataSource = {this.state.dataSource}
             renderRow = {this.renderRowView.bind(this)}
@@ -330,7 +358,7 @@ class App extends React.Component {
             </TouchableHighlight>
         </View>
       );
-    } /*else {
+    } else {
       return (
         <View>
           <Components.MapView
@@ -354,7 +382,7 @@ class App extends React.Component {
           </TouchableOpacity>
         </View>
       );
-    }*/
+    }
   }
 }
 
