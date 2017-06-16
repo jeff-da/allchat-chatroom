@@ -5,7 +5,7 @@ import KeyboardEventListener from './util/KeyboardEventListener';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 const io = require('socket.io-client');
-const url = 'https://git.heroku.com/expo-chat-example.git';
+const url = 'https://expo-chat-example.herokuapp.com/';
 const SleekLoadingIndicator = require('react-native-sleek-loading-indicator');
 var {height, width} = Dimensions.get('window');
 var component = this;
