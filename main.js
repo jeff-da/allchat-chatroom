@@ -6,6 +6,7 @@ import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 const io = require('socket.io-client');
 const url = 'https://e993f380.ngrok.io';
+const SleekLoadingIndicator = require('react-native-sleek-loading-indicator');
 var {height, width} = Dimensions.get('window');
 var component = this;
 
@@ -86,6 +87,7 @@ class App extends React.Component {
       latitude: 35.4478014,
       longitude: -120.1680304,
       nickname: 'Default Nickname',
+      loading: false,
       buttonStyle: {
          height: 45,
          alignSelf: 'stretch',
@@ -142,13 +144,14 @@ class App extends React.Component {
     });
 
     socket.on('location', location => {
-      socket.emit('location message', ' > ' + this.state.nickname + ' just shared their location!', location);
+      socket.emit('location message', '' + this.state.nickname + ' just shared their location!', location);
     });
 
     socket.on('message list', list => {
       this.setState({
         messageList: list,
         dataSource: this.state.dataSource.cloneWithRows(list),
+        loading: false,
       })
     });
 
@@ -175,10 +178,14 @@ class App extends React.Component {
     socket.emit('chat message', '' + this.state.nickname + ': ' + this.state.message);
     this.setState({
       message: '',
+      loading: true,
     });
   }
 
   onSharePressed() {
+    this.setState({
+      loading: true,
+    });
     this._getLocationAsync();
   }
 
@@ -237,7 +244,7 @@ class App extends React.Component {
           onPress={() => {
             this.setState({
               longitude: rowData.location.coords.longitude,
-              latitude: rowData.location.coords.latitude
+              latitude: rowData.location.coords.latitude,
             });
             Linking.canOpenURL('http://google.com').then(supported => {
             if (!supported) {
@@ -257,9 +264,42 @@ class App extends React.Component {
     }
   }
 
-
+//<SleekLoadingIndicator loading={this.state.loading} />
   render() {
-    if (this.state.inMapView != true) {
+    if (this.state.loading) {
+      return (
+        <View style={this.state.containerStyle}>
+          <ListView
+            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+            dataSource = {this.state.dataSource}
+            renderRow = {this.renderRowView.bind(this)}
+          />
+          <TextInput
+            ref={'chatInput'}
+            style={styles.input}
+            onChangeText={this.onChange.bind(this)}
+          />
+            <TouchableHighlight
+              onPress={this.onAddPressed.bind(this)}
+              style={this.state.buttonStyle}
+            >
+              <Text style={styles.buttonText}>
+                Send Message
+              </Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={this.onSharePressed.bind(this)}
+              style={this.state.buttonStyle}
+            >
+              <Text style={styles.buttonText}>
+                Share Location
+              </Text>
+            </TouchableHighlight>
+            <SleekLoadingIndicator loading={this.state.loading} text={'Sending...'}/>
+        </View>
+      );
+    } else {
+    //if (this.state.inMapView != true) {
       return (
         <View style={this.state.containerStyle}>
           <ListView
