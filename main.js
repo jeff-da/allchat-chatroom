@@ -1,12 +1,13 @@
-import Expo, { Components, Constants, Location, Permissions, WebBrowser } from 'expo';
+import Expo, { Location, Permissions } from 'expo';
 import React, { Component } from 'react';
-import { Platform, ListView, FlatList, TextInput, TouchableHighlight, TouchableOpacity, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { ListView, TextInput, TouchableHighlight, TouchableOpacity, StyleSheet, Text, View, Dimensions, Linking } from 'react-native';
 import KeyboardEventListener from './util/KeyboardEventListener';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
 const io = require('socket.io-client');
 const url = 'https://e993f380.ngrok.io';
 var {height, width} = Dimensions.get('window');
+var component = this;
 
 const styles = StyleSheet.create({
    input: {
@@ -28,13 +29,33 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
    },
+   locationButton: {
+      height: 45,
+      alignSelf: 'stretch',
+      backgroundColor: '#00A742',
+      marginTop: 10,
+      marginLeft: 10,
+      marginRight: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+   },
+   chatBox: {
+      height: 45,
+      alignSelf: 'stretch',
+      marginTop: 10,
+      marginLeft: 10,
+      marginRight: 10,
+      justifyContent: 'center',
+      backgroundColor: '#F6F6F6',
+   },
    buttonText: {
       fontSize: 14,
       fontWeight: '600',
       color: '#FAFAFA',
    },
    chatText: {
-      fontSize: 16,
+     fontSize: 14,
+     fontWeight: '400',
    },
    map: {
      width: width,
@@ -48,12 +69,12 @@ class App extends React.Component {
     var ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
-    var initialMessages = ['Hello! Welcome to the chatroom.', 'Messages will appear below.'];
+    var initialMessages = [ { text: 'Connecting...',
+                              location: null, }];
     const socket = io(url, {
       transports: ['websocket'],
     });
     socket.emit('name', ' ');
-    socket.emit('A new user just joined the chatroom!');
     this.state = {
       isConnected: false,
       message: ' ',
@@ -105,9 +126,6 @@ class App extends React.Component {
     });
 
     socket.on('connect', () => {
-      if (!this.state.isConnected) {
-
-      };
       this.setState({
         isConnected: true,
         buttonStyle: {
@@ -164,15 +182,20 @@ class App extends React.Component {
     this._getLocationAsync();
   }
 
-  onLocationPressed() {
-
-  }
-
   onMapPressed() {
     this.setState({
       lastLocation: null,
       inMapView: false,
     });
+  }
+
+  onLocationPressed() {
+    console.log('cool beans');
+    //this.setState({
+    //  longitude: location.coords.longitude,
+    //  latitude: location.coords.latitude
+    //});
+    //this.handlePressButtonAsync();
   }
 
   _getLocationAsync = async () => {
@@ -197,91 +220,77 @@ class App extends React.Component {
     this.setState({ inMapView: true });
   };
 
-  _renderRowView(rowData) {
+  renderRowView(rowData) {
+    if (rowData.location == null) {
       return (
-        <TouchableHighlight
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>
-            {rowData}
+        <TouchableHighlight style={styles.chatBox} >
+          <Text style={styles.chatText}>
+            {rowData.text}
           </Text>
         </TouchableHighlight>
-        //<Text style={styles.chatText}>{rowData}</Text>
-      );
-  }
-
-  render() {
-    if (this.state.lastLocation == null) {
-      return (
-        <View style={this.state.containerStyle}>
-          <ListView
-            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-            dataSource = {this.state.dataSource}
-            renderRow = {this._renderRowView}
-          />
-          <TextInput
-            ref={'chatInput'}
-            style={styles.input}
-            onChangeText={this.onChange.bind(this)}
-          />
-            <TouchableHighlight
-              onPress={this.onAddPressed.bind(this)}
-              style={this.state.buttonStyle}
-            >
-              <Text style={styles.buttonText}>
-                Send Message
-              </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={this.onSharePressed.bind(this)}
-              style={this.state.buttonStyle}
-            >
-              <Text style={styles.buttonText}>
-                Share Location
-              </Text>
-            </TouchableHighlight>
-        </View>
-      );
-    } else if (this.state.inMapView == false) {
-      return (
-        <View style={this.state.containerStyle}>
-          <ListView
-            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-            dataSource = {this.state.dataSource}
-            renderRow = {this._renderRowView}
-          />
-          <TextInput
-            ref={'chatInput'}
-            style={styles.input}
-            onChangeText={this.onChange.bind(this)}
-          />
-            <TouchableHighlight
-              onPress={this.onAddPressed.bind(this)}
-              style={this.state.buttonStyle}
-            >
-              <Text style={styles.buttonText}>
-                Send Message
-              </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={this.onSharePressed.bind(this)}
-              style={this.state.buttonStyle}
-            >
-              <Text style={styles.buttonText}>
-                Share Location
-              </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={this._handlePressButtonAsync}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>
-                View Last Shared Location
-              </Text>
-            </TouchableHighlight>
-        </View>
       );
     } else {
+      return (
+        <TouchableHighlight
+          style={styles.locationButton}
+          // the line below this
+          onPress={() => {
+            this.setState({
+              longitude: rowData.location.coords.longitude,
+              latitude: rowData.location.coords.latitude
+            });
+            Linking.canOpenURL('http://google.com').then(supported => {
+            if (!supported) {
+              console.log('Cant handle url: ' + url);
+            } else {
+              return Linking.openURL('https://www.google.com/maps/search/' + this.state.latitude + ',' + this.state.longitude);
+            }
+          }).catch(err => console.error('An error occurred', err));
+            //this._handlePressButtonAsync.bind(this);
+          }}
+        >
+          <Text style={styles.buttonText}>
+            {rowData.text}
+          </Text>
+        </TouchableHighlight>
+      );
+    }
+  }
+
+
+  render() {
+    if (this.state.inMapView != true) {
+      return (
+        <View style={this.state.containerStyle}>
+          <ListView
+            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+            dataSource = {this.state.dataSource}
+            renderRow = {this.renderRowView.bind(this)}
+          />
+          <TextInput
+            ref={'chatInput'}
+            style={styles.input}
+            onChangeText={this.onChange.bind(this)}
+          />
+            <TouchableHighlight
+              onPress={this.onAddPressed.bind(this)}
+              style={this.state.buttonStyle}
+            >
+              <Text style={styles.buttonText}>
+                Send Message
+              </Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={this.onSharePressed.bind(this)}
+              style={this.state.buttonStyle}
+            >
+              <Text style={styles.buttonText}>
+                Share Location
+              </Text>
+            </TouchableHighlight>
+        </View>
+      );
+    } /*else {
       return (
         <View>
           <Components.MapView
@@ -305,7 +314,7 @@ class App extends React.Component {
           </TouchableOpacity>
         </View>
       );
-    }
+    }*/
   }
 }
 

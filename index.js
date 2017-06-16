@@ -1,7 +1,16 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var msgList = [ 'Hello! Welcome to the chatroom.', 'Messages will appear below :)'];
+var msgList = [
+                {
+                  text: 'Hello! Welcome to the chatroom.',
+                  location: null,
+                },
+                {
+                  text: 'Send a message!',
+                  location: null,
+                }
+              ];
 var nickname = 'Clueless Monkey';
 let adjectives = ['Adorable', 'Beautiful', 'Clean', 'Drab', 'Elegant', 'Fancy', 'Glamorous', 'Handsome'
                   , 'Magnificent', 'Old-Fashioned', 'Plain', 'Quaint', 'Sparkling', 'Ugliest', 'Wide-Eyed'];
@@ -17,21 +26,29 @@ io.on('connection', function(socket){
     if (msg.coords != null) {
        io.emit('location', msg);
     } else {
-       msgList.unshift(msg);
+       msgList.unshift({
+                        text: msg,
+                        location: null
+                      });
     }
     if (msgList.length > 20) {
-      msgList.splice(0, 1);
+      msgList.splice(20, 1);
     }
     io.emit('message list', msgList);
   });
+
   socket.on('location message', function(msg, location){
     console.log('location message: ' + msg);
-    msgList.unshift(msg);
+    msgList.unshift({
+                     text: msg,
+                     location: location,
+                   });
     if (msgList.length > 20) {
-      msgList.splice(0, 1);
+      msgList.splice(20, 1);
     }
     io.emit('message list', msgList);
   });
+
   socket.on('name', function(nick) {
     var index = Math.floor(Math.random() * adjectives.length);
     if (adjectives.length != 0) {
@@ -44,7 +61,6 @@ io.on('connection', function(socket){
       io.emit('name', 'Another Wandering Traveler');
     }
   });
-  console.log('a user connected');
 });
 
 http.listen(3000, function(){
