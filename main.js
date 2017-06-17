@@ -260,21 +260,12 @@ class App extends React.Component {
       return (
         <TouchableHighlight
           style={styles.locationButton}
-          // the line below this
           onPress={() => {
             this.setState({
               longitude: rowData.location.coords.longitude,
               latitude: rowData.location.coords.latitude,
               inMapView: true,
             });
-            /*Linking.canOpenURL('http://google.com').then(supported => {
-            if (!supported) {
-              console.log('Cant handle url: ' + url);
-            } else {
-              return Linking.openURL('https://www.google.com/maps/search/' + this.state.latitude + ',' + this.state.longitude);
-            }
-          }).catch(err => console.error('An error occurred', err));*/
-            //this._handlePressButtonAsync.bind(this);
           }}
         >
           <Text style={styles.buttonText}>
@@ -323,7 +314,6 @@ class App extends React.Component {
         </View>
       );
     } else if (!this.state.inMapView) {
-    //if (this.state.inMapView != true) {
       return (
         <View style={this.state.containerStyle}>
           <ListView

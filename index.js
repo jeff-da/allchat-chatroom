@@ -107,13 +107,10 @@ io.on('connection', function(socket){
   socket.on('name', function(nick) {
     var index = Math.floor(Math.random() * adjectives.length);
     if (adjectives.length != 0) {
-      // change .length to check if the head is null
       if (nicknames.get(adjectives[index]).head == null) {
         adjectives.splice(index, 1);
         index = 0;
       }
-      // change adjectives[index].pop() to take the value of head and use it as the
-      // noun, then move head to head.next.
       io.emit('name', adjectives[index] + ' ' + nicknames.get(adjectives[index]).remove());
     } else {
       io.emit('name', 'Another Wandering Traveler');
@@ -129,11 +126,5 @@ http.listen(process.env.PORT || 3000, function(){
     for (var i = 0; i < 15000; i++) {
       nicknames.get(adjective).add(nouns[Math.floor(Math.random() * 75)]);
     }
-    // !!
-    // add the nouns in the array in a random order
-    /*var count = Math.floor(Math.random() * 1027);
-    for (var i = 0; i < count; i++) {
-      nicknames.get(adjective).push(nicknames.get(adjective).shift());
-    }*/
   }
 });
