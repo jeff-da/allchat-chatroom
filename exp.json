@@ -1,7 +1,7 @@
 {
-  "name": "expo-chatroom3",
-  "description": "An empty new project",
-  "slug": "expo-chatroom3",
+  "name": "The Chatroom",
+  "description": "Awesome chatroom with native location sharing!",
+  "slug": "The Chatroom",
   "privacy": "public",
   "sdkVersion": "17.0.0",
   "version": "1.0.0",

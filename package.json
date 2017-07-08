@@ -1,7 +1,7 @@
 {
-  "name": "expo-chatroom3",
+  "name": "Chatroom",
   "version": "0.0.0",
-  "description": "Hello Expo!",
+  "description": "Awesome chatroom with native location sharing!",
   "author": null,
   "private": true,
   "main": "main.js",

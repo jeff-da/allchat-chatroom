@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
    button: {
       height: 45,
       alignSelf: 'stretch',
-      backgroundColor: '#05A5D1',
+      backgroundColor: '#75A0D1',
       marginTop: 10,
       marginLeft: 10,
       marginRight: 10,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
    locationButton: {
       height: 45,
       alignSelf: 'stretch',
-      backgroundColor: '#00A742',
+      backgroundColor: '#6FD936',
       marginTop: 10,
       marginLeft: 10,
       marginRight: 10,
@@ -112,6 +112,16 @@ class App extends React.Component {
          backgroundColor: '#F7F7F7',
          paddingBottom: 10,
       },
+      gameButton: {
+         height: 45,
+         alignSelf: 'stretch',
+         backgroundColor: '#E1E1E1',
+         marginTop: 10,
+         marginLeft: 10,
+         marginRight: 10,
+         alignItems: 'center',
+         justifyContent: 'center',
+      },
     }
   }
 
@@ -139,13 +149,23 @@ class App extends React.Component {
         buttonStyle: {
           height: 45,
           alignSelf: 'stretch',
-          backgroundColor: '#05A5D1',
+          backgroundColor: '#75A0D1',
           marginTop: 10,
           marginLeft: 10,
           marginRight: 10,
           alignItems: 'center',
           justifyContent: 'center',
-        }
+        },
+        gameButton: {
+           height: 45,
+           alignSelf: 'stretch',
+           backgroundColor: '#0C936A',
+           marginTop: 10,
+           marginLeft: 10,
+           marginRight: 10,
+           alignItems: 'center',
+           justifyContent: 'center',
+        },
       });
     });
 
@@ -178,17 +198,19 @@ class App extends React.Component {
   }
 
   onAddPressed() {
-    this.refs['chatInput'].clear();
+    if (this.state.message != '') {
+      this.refs['chatInput'].clear();
 
-    const socket = io(url, {
-      transports: ['websocket'],
-    });
-    socket.emit('chat message', this.state.nickname, ': ' + this.state.message);
-    this.setState({
-      message: '',
-      loading: true,
-    });
-    this.listView.scrollTo({ y: 0 });
+      const socket = io(url, {
+        transports: ['websocket'],
+      });
+      socket.emit('chat message', this.state.nickname, ': ' + this.state.message);
+      this.setState({
+        message: '',
+        loading: true,
+      });
+      this.listView.scrollTo({ y: 0 });
+    }
   }
 
   onSharePressed() {
@@ -218,6 +240,10 @@ class App extends React.Component {
       fontWeight: '500',
      }
    }
+ }
+
+ onGamePressed() {
+
  }
 
   _getLocationAsync = async () => {
@@ -310,6 +336,14 @@ class App extends React.Component {
                 Share Location
               </Text>
             </TouchableHighlight>
+            <TouchableHighlight
+              onPress={this.onGamePressed.bind(this)}
+              style={this.state.gameButton}
+            >
+              <Text style={styles.buttonText}>
+                Play a Game!
+              </Text>
+            </TouchableHighlight>
             <SleekLoadingIndicator loading={this.state.loading} text={'Sending...'}/>
         </View>
       );
@@ -344,6 +378,14 @@ class App extends React.Component {
             >
               <Text style={styles.buttonText}>
                 Share Location
+              </Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={this.onGamePressed.bind(this)}
+              style={this.state.gameButton}
+            >
+              <Text style={styles.buttonText}>
+                Play a Game!
               </Text>
             </TouchableHighlight>
         </View>
