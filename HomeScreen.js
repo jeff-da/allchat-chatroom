@@ -71,15 +71,6 @@ const styles = StyleSheet.create({
 });
 
 class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Return to Week Details',
-    headerTintColor: 'white',
-    headerStyle: {
-      backgroundColor: '#821c21',
-      paddingTop: 20,
-      height: 0,
-    }
-  }
 
   constructor() {
     super();
@@ -253,7 +244,7 @@ class HomeScreen extends React.Component {
  }
 
  onGamePressed() {
-
+   this.props.navigator.push('game');
  }
 
   _getLocationAsync = async () => {
