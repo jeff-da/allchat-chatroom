@@ -1,4 +1,4 @@
-import Expo, { Components, Location, Permissions } from 'expo';
+import Expo, { Location, Permissions, MapView } from 'expo';
 import React, { Component } from 'react';
 import { ListView, TextInput, TouchableHighlight, TouchableOpacity, StyleSheet, Text, View, Dimensions, Linking } from 'react-native';
 import KeyboardEventListener from './util/KeyboardEventListener';
@@ -403,7 +403,7 @@ class HomeScreen extends React.Component {
     } else {
       return (
         <View>
-          <Components.MapView
+          <MapView
             style={styles.map}
             region={{
               latitude: this.state.latitude,
@@ -412,13 +412,13 @@ class HomeScreen extends React.Component {
               longitudeDelta: 0.0421,
             }}
           >
-          <Components.MapView.Marker
+          <MapView.Marker
             coordinate={{
               latitude: this.state.latitude,
               longitude: this.state.longitude,
             }}
           />
-          </Components.MapView>
+          </MapView>
           <TouchableOpacity style={styles.button} onPress={this.onMapPressed.bind(this)}>
             <Text style={styles.buttonText}> Back to Chatroom </Text>
           </TouchableOpacity>
