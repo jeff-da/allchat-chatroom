@@ -35,13 +35,17 @@ class GameScreen extends React.Component {
   }
 
   onReturnPress() {
-     this.props.navigator.push('home');
+    this.props.navigator.push('home');
+  }
+
+  onBirdPress() {
+    this.props.navigator.push('bird');
   }
 
   render() {
     return (
       <View style={styles.containerStyle}>
-        <TouchableHighlight style={styles.button}>
+        <TouchableHighlight style={styles.button} onPress={this.onBirdPress.bind(this)}>
           <Text>Play Flappy Plane</Text>
         </TouchableHighlight>
         <TouchableHighlight style={styles.button}>
