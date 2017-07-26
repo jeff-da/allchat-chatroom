@@ -1,4 +1,4 @@
-import Expo from 'expo';
+import Expo, { Font } from 'expo';
 import React from 'react';
 import {
   Alert,
@@ -66,6 +66,10 @@ export default class Game extends React.Component {
     this.animatingIds = [];
     this.scene = new THREE.Scene();
     this.createGameScene();
+
+    Font.loadAsync({
+      'pricedown': require('../Assets/fonts/pricedown.ttf'),
+    });
   }
 
   //// Scene
@@ -244,11 +248,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 40,
     width: 75,
-    left: 0,
+    left: 10,
     textAlign: 'center',
     zIndex: 100,
     backgroundColor: 'transparent',
     color: 'white',
-    fontSize: 30,
+    fontSize: 60,
+    fontFamily: 'pricedown'
   },
 });
