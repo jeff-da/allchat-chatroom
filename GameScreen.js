@@ -1,3 +1,5 @@
+// Unused Game Screen file. Meant for selection of several games in th e future.
+
 import Expo from 'expo';
 import React from 'react';
 import {

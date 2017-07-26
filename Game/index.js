@@ -27,7 +27,6 @@ export default class Game extends React.Component {
 
   constructor(props) {
     super(props);
-    this.returnTo = this.returnTo.bind(this);
   }
 
   state = {
@@ -145,9 +144,8 @@ export default class Game extends React.Component {
     if (this.intersects(object, this.planeMesh)) {
       Alert.alert(
         'Oh no!',
-        'You lost',
+        'You lost :(',
         [
-          {text: 'Return to Chatroom', onPress: () => this.returnTo()},
           {text: 'OK', onPress: () => {}},
         ],
         { cancelable: true }

@@ -244,7 +244,7 @@ class HomeScreen extends React.Component {
  }
 
  onGamePressed() {
-   this.props.navigator.push('game');
+   this.props.navigator.push('bird');
  }
 
   _getLocationAsync = async () => {
