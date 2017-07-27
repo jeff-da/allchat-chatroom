@@ -1,7 +1,7 @@
 {
-  "name": "The Chatroom",
-  "description": "Awesome chatroom with native location sharing!",
-  "slug": "The Chatroom",
+  "name": "AllChat Cloud",
+  "description": "Connect and share with people all around the world!",
+  "slug": "AllChat",
   "privacy": "public",
   "sdkVersion": "17.0.0",
   "version": "1.0.0",
